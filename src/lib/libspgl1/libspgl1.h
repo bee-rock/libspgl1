@@ -14,12 +14,12 @@ MatrixType add(const MatrixType& a, const MatrixType& b){
 }
 
 template<typename MatrixType>
-int n_rows(const MatrixType& a){
+size_t n_rows(const MatrixType& a){
 	return a.n_rows;
 }
 
 template<typename MatrixType>
-int n_cols(const MatrixType& a){
+size_t n_cols(const MatrixType& a){
 	return a.n_cols;
 }
 
@@ -38,6 +38,8 @@ void do_math(const MatrixType& a, const MatrixType& b)
     auto d = libspgl1::matrix::add(a, b);
     std::cout<<libspgl1::matrix::n_rows(d)<<std::endl;
     std::cout<<libspgl1::matrix::n_cols(d)<<std::endl;
+    std::cout << c << std::endl;
+    std::cout << d << std::endl;
 }
 
 } // project
