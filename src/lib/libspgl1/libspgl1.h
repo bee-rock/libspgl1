@@ -26,7 +26,6 @@ size_t n_cols(const MatrixType& a){
 }
 }
 
-// Library code
 namespace libspgl1 {
 
 template<typename MatrixType>
@@ -42,5 +41,4 @@ void do_math(const MatrixType& a, const MatrixType& b)
     std::cout << d << std::endl;
 }
 
-} // project
-// Library code end
+}
