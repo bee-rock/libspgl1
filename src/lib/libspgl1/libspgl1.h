@@ -23,22 +23,29 @@ size_t n_cols(const MatrixType& a){
 	return a.n_cols;
 }
 
+template<typename MatrixType>
+MatrixType dot(const MatrixType& a, const MatrixType& b){
+	return a % b;
+}
+
+template<typename MatrixType>
+float norm(const MatrixType& a, float p){
+	float intermediate_value = 0;
+	for (auto element : a)
+		intermediate_value += pow(abs(element), p);
+	return pow(intermediate_value,1/p);
+}
 }
 }
 
 namespace libspgl1 {
 
 template<typename MatrixType>
-void do_math(const MatrixType& a, const MatrixType& b)
+double NormL1_primal(const MatrixType& a, const MatrixType& b)
 {
-    auto c = libspgl1::matrix::multiply(a, b);
-    std::cout<<libspgl1::matrix::n_rows(c)<<std::endl;
-    std::cout<<libspgl1::matrix::n_cols(c)<<std::endl;
-    auto d = libspgl1::matrix::add(a, b);
-    std::cout<<libspgl1::matrix::n_rows(d)<<std::endl;
-    std::cout<<libspgl1::matrix::n_cols(d)<<std::endl;
-    std::cout << c << std::endl;
-    std::cout << d << std::endl;
+	int p = 1;
+	return libspgl1::matrix::norm(libspgl1::matrix::dot(a, b), p);
+
 }
 
 }
