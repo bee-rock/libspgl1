@@ -44,6 +44,16 @@
 								<option id="gnu.cpp.link.option.libs.1875611064" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="armadillo"/>
 									<listOptionValue builtIn="false" value="unittest"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="afcuda"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="cudart"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="nvvm"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="cufft"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="cublas"/>
+								</option>
+								<option id="gnu.cpp.link.option.paths.1331968469" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="/usr/local/include"/>
+									<listOptionValue builtIn="false" value="/usr/local/cuda-6.0/lib64/"/>
+									<listOptionValue builtIn="false" value="/usr/local/cuda/nvvm/lib64"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.30735720" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -151,7 +161,7 @@
 								<option id="gnu.cpp.link.option.libs.1462592879" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="unittest"/>
 								</option>
-								<option id="gnu.cpp.link.option.paths.1081184812" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths"/>
+								<option id="gnu.cpp.link.option.paths.1081184812" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.130366536" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
