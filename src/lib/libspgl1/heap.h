@@ -1,34 +1,5 @@
-/* heap.c
-   $Id $
-
-   ----------------------------------------------------------------------
-   This file is part of SPGL1 (Spectral Projected Gradient for L1).
-
-   Copyright (C) 2007 Ewout van den Berg and Michael P. Friedlander,
-   Department of Computer Science, University of British Columbia, Canada.
-   All rights reserved. E-mail: <{ewout78,mpf}@cs.ubc.ca>.
-
-   SPGL1 is free software; you can redistribute it and/or modify it
-   under the terms of the GNU Lesser General Public License as
-   published by the Free Software Foundation; either version 2.1 of the
-   License, or (at your option) any later version.
-
-   SPGL1 is distributed in the hope that it will be useful, but WITHOUT
-   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General
-   Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with SPGL1; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-   USA
-   ----------------------------------------------------------------------
-*/
-
 #include <assert.h>
-
-#include "heap.h"
-
+#define swap_double(a,b) { double c; c = (a); (a) = (b); (b) = c; }
 
 /* ======================================================================= */
 /*                     H E L P E R   F U N C T I O N S                     */
@@ -58,7 +29,7 @@ void heap_sift( int root, int lastChild, double x[] )
 	if (child < lastChild)
 	    if ( x[child] < x[child+1] )
 		child++;
-	
+
 	if ( x[child] <= x[root] )
 	    break;
 
@@ -93,7 +64,7 @@ void heap_sift_2( int root, int lastChild, double x[], double y[] )
 	if (child < lastChild)
 	    if ( x[child] < x[child+1] )
 		child++;
-	
+
 	if ( x[child] <= x[root] )
 	    break;
 
@@ -130,7 +101,7 @@ int heap_del_max(int numElems, double x[])
 
     /* Contract the heap size, thereby discarding the largest element. */
     lastChild--;
-    
+
     /* Restore the heap property of the contracted heap. */
     heap_sift(0, lastChild, x);
 
@@ -147,7 +118,7 @@ int heap_del_max(int numElems, double x[])
     -# Shorten the length of the heaps by one.
     -# Restore the heap property to the contracted heap x.
        This effectively makes x[0] the next largest element
-       in the list.  
+       in the list.
 
   \param[in]     numElems   The number of elements in the current heap.
   \param[in,out] x          The array to be modified.
@@ -163,11 +134,11 @@ int heap_del_max_2( int numElems, double x[], double y[] )
 
     /* Swap the largest element with the lastChild. */
     swap_double( x[0], x[lastChild] );
-    swap_double( y[0], y[lastChild] ); 
+    swap_double( y[0], y[lastChild] );
 
     /* Contract the heap size, thereby discarding the largest element. */
     lastChild--;
-    
+
     /* Restore the heap property of the contracted heap. */
     heap_sift_2( 0, lastChild, x, y );
 
@@ -176,15 +147,15 @@ int heap_del_max_2( int numElems, double x[], double y[] )
 
 
 /*!
-  
+
   \brief  Build a heap by adding one element at a time.
-  
+
   \param[in]      n   The length of x and ix.
   \param[in,out]  x   The array to be heapified.
 
 */
 void heap_build( int n, double x[] )
-{    
+{
     int i;
 
     for (i = n/2; i >= 0; i--) heap_sift( i, n-1, x );
@@ -192,9 +163,9 @@ void heap_build( int n, double x[] )
 
 
 /*!
-  
+
   \brief  Build a heap by adding one element at a time.
-  
+
   \param[in]      n   The length of x and ix.
   \param[in,out]  x   The array to be heapified.
   \param[in,out]  y   The array to be reordered in sync. with x.
