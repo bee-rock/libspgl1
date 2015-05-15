@@ -12,7 +12,8 @@ struct test_minimal : unittest::testcase<> {
     {
         UNITTEST_CLASS(test_minimal)
         UNITTEST_RUN(test_dot_product)
-        UNITTEST_RUN(test_norm)
+        UNITTEST_RUN(test_norm_l1)
+        UNITTEST_RUN(test_norm_l2)
         UNITTEST_RUN(test_NormL1_primal_with_weighting_equal_to_one)
         UNITTEST_RUN(test_NormL1_primal_with_weights_less_than_one)
         //UNITTEST_RUN(test_NormL1_primal_weights_cannot_be_negative)
@@ -29,11 +30,19 @@ struct test_minimal : unittest::testcase<> {
     }
 
 
-    void test_norm()
+    void test_norm_l1()
     {
-    	arma::vec v1 = arma::linspace<arma::vec>(-1, 1, 2);
-    	assert_equal(2.0, libspgl1::vector::norm<float>(v1, 1));
+    	arma::vec a = {-1,1};
+    	assert_equal(2.0, libspgl1::math::norm<float>(a, 1));
     }
+
+    void test_norm_l2()
+    {
+    	arma::vec a = {3,4};
+    	assert_equal(5.0, libspgl1::math::norm<float>(a, 2));
+    }
+
+
 
     void test_NormL1_primal_with_weighting_equal_to_one()
     {

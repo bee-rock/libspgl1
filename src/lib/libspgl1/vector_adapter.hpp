@@ -1,3 +1,6 @@
+#pragma once
+#include "math.hpp"
+
 namespace libspgl1 {
 namespace vector {
 
@@ -20,20 +23,11 @@ void set_element(VectorType& vector, size_t index, ElementType value)
 
 template<typename ElementType, typename VectorType>
 ElementType dot(const VectorType& a, const VectorType& b){
-	size_t n_elems = n_elem(a);
+	const size_t n_elems = n_elem(a);
 	ElementType result{0};
 	for (size_t i=0; i<n_elems; ++i)
-		result += get_element<ElementType>(a, i) * get_element<ElementType>(b, i);
+		result += libspgl1::vector::get_element<ElementType>(a, i) * libspgl1::vector::get_element<ElementType>(b, i);
 	return static_cast<ElementType>(result);
-}
-
-template<typename ElementType, typename VectorType>
-ElementType norm(const VectorType& a, float p){
-	ElementType result{0};
-	size_t n_elems = n_elem(a);
-	for (size_t i=0; i<n_elems; ++i)
-		result += pow(abs(get_element<ElementType>(a, i)), p);
-	return static_cast<ElementType>(pow(result,1/p));
 }
 
 } // matrix
