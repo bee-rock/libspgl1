@@ -5,18 +5,18 @@ namespace libspgl1 {
 namespace math {
 
 template<typename ElementType>
-ElementType pow(ElementType x, ElementType p) {
+ElementType pow(const ElementType& x, const ElementType& p) {
     return std::pow(x, p);
 }
 
 template<typename VectorType>
-VectorType abs(VectorType x) {
+VectorType abs(const VectorType& x) {
     return std::abs(x);
 }
 
 template<typename ElementType, typename VectorType>
-ElementType norm(const VectorType& a, ElementType p){
-	ElementType result{0};
+double norm(const VectorType& a, const double& p){
+	double result{0};
 	const size_t n_elems = libspgl1::vector::n_elem(a);
 	for (size_t i=0; i<n_elems; ++i)
 		result += libspgl1::math::pow<ElementType>(
