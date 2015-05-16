@@ -6,7 +6,8 @@
 #include "heap.h"
 
 /* ----------------------------------------------------------------------- */
-int projectI(double xPtr[], double bPtr[], double tau, int n)
+template<typename VectorType>
+VectorType projectI(const VectorType& xPtr, const VectorType& bPtr, double tau, int n)
 /* ----------------------------------------------------------------------- */
 {  int
        i, j;
@@ -15,54 +16,56 @@ int projectI(double xPtr[], double bPtr[], double tau, int n)
        csb,        /* Cumulative sum of b */
        alpha = 0,
        soft  = 0;  /* Soft thresholding value */
-
-   /* The vector xPtr[] is initialized to bPtr[] prior to the function call */
-
-   /* Check if tau is essentially zero.  Exit with x = 0. */
+   VectorType x_return{libspgl1::vector::n_elem(xPtr)};
+//
+//   /* The vector xPtr[] is initialized to bPtr[] prior to the function call */
+//
+//   /* Check if tau is essentially zero.  Exit with x = 0. */
    if (tau < DBL_EPSILON) {
-       for (i = 0; i < n; i++) xPtr[i] = 0;
-       return 0;
+       for (size_t i = 0; i < n; i++)
+    	   libspgl1::vector::set_element(x_return, i, 0);
+       return x_return;
    }
-
-   /* Check if ||b||_1 <= lambda.  Exit with x = b. */
-   for (csb = 0, i = 0; i < n; i++) csb += bPtr[i];
-   if (csb <= tau)
-       return 0;
-
-   /* Set up the heap */
-   heap_build(n, xPtr);
-
-   /* Initialise csb with -tau so we don't have to subtract this at every iteration */
-   csb = -tau;
-
-   /* Determine threshold value `soft' */
-   for (i = n, j = 0; j < n; soft = alpha)
-   {
-      b = xPtr[0];       /* Get current maximum heap element         */
-      j ++;              /* Give compiler some room for optimization */
-      csb += b;          /* Update the cumulative sum of b           */
-
-      /* Move heap to next maximum value */
-      i = heap_del_max(i, xPtr);
-
-      /* Compute the required step to satisfy the tau constraint */
-      alpha  = csb / j;
-
-      /* We are done as soon as the constraint can be satisfied    */
-      /* without exceeding the current minimum value in `vector' b */
-      if (alpha >= b)
-          break;
-   }
-
-   /* Set the solution by applying soft-thresholding with `soft' */
-   for (i = 0; i < n; i++)
-   {  b = bPtr[i];
-      if (b <= soft)
-           xPtr[i] = 0;
-      else xPtr[i] = b - soft;
-   }
-
-   return j;
+//
+//   /* Check if ||b||_1 <= lambda.  Exit with x = b. */
+//   for (csb = 0, i = 0; i < n; i++) csb += bPtr[i];
+//   if (csb <= tau)
+//       return 0;
+//
+//   /* Set up the heap */
+//   heap_build(n, xPtr);
+//
+//   /* Initialise csb with -tau so we don't have to subtract this at every iteration */
+//   csb = -tau;
+//
+//   /* Determine threshold value `soft' */
+//   for (i = n, j = 0; j < n; soft = alpha)
+//   {
+//      b = xPtr[0];       /* Get current maximum heap element         */
+//      j ++;              /* Give compiler some room for optimization */
+//      csb += b;          /* Update the cumulative sum of b           */
+//
+//      /* Move heap to next maximum value */
+//      i = heap_del_max(i, xPtr);
+//
+//      /* Compute the required step to satisfy the tau constraint */
+//      alpha  = csb / j;
+//
+//      /* We are done as soon as the constraint can be satisfied    */
+//      /* without exceeding the current minimum value in `vector' b */
+//      if (alpha >= b)
+//          break;
+//   }
+//
+//   /* Set the solution by applying soft-thresholding with `soft' */
+//   for (i = 0; i < n; i++)
+//   {  b = bPtr[i];
+//      if (b <= soft)
+//           xPtr[i] = 0;
+//      else xPtr[i] = b - soft;
+//   }
+//
+//   return j;
 }
 
 

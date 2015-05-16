@@ -42,8 +42,6 @@ struct test_minimal : unittest::testcase<> {
     	assert_equal(5.0, libspgl1::math::norm<double>(a, 2));
     }
 
-
-
     void test_NormL1_primal_with_weighting_equal_to_one()
     {
     	arma::vec v = arma::linspace<arma::vec>(-1, 1, 2);
@@ -86,11 +84,14 @@ struct test_minimal : unittest::testcase<> {
     	arma::mat A;
     	A.load("/home/brock/workspace/libspgl1-code/test/A_basic.csv");
     	arma::mat At = A.t();
-    	arma::vec x0;
-    	x0.load("/home/brock/workspace/libspgl1-code/test/x0_basic.csv");
-    	arma::vec b = A*x0;
-    	std::cout << b << std::endl;
-    	std::cout << libspgl1::math::norm<double>(b, 2.0) << std::endl;
+    	arma::vec x;
+    	x.load("/home/brock/workspace/libspgl1-code/test/x0_basic.csv");
+    	arma::vec b = A*x;
+    	arma::vec x0{libspgl1::matrix::n_cols<arma::mat>(A)};
+    	x0.zeros();
+    	libspgl1::spgl1(A,At,b,x0);
+    	//std::cout << b << std::endl;
+    	//std::cout << libspgl1::math::norm<double>(b, 2.0) << std::endl;
     }
 };
 REGISTER(test_minimal);

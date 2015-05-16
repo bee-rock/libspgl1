@@ -16,7 +16,7 @@ ElementType get_element(const VectorType& vector, size_t index)
 }
 
 template<typename ElementType, typename VectorType>
-void set_element(VectorType& vector, size_t index, ElementType value)
+void set_element(VectorType& vector, const size_t index, ElementType value)
 {
 	vector(index) = value;
 }
