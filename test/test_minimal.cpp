@@ -4,6 +4,16 @@
 
 using namespace unittest::assertions;
 
+namespace libspgl1 {
+namespace vector {
+
+    arma::vec abs(const arma::mat& a){
+    	return arma::abs(a);
+    }
+
+} // matrix
+} // project
+
 struct test_minimal : unittest::testcase<> {
 
     static void run()
@@ -89,9 +99,9 @@ struct test_minimal : unittest::testcase<> {
     	x.load("/home/brock/workspace/libspgl1-code/test/x0_basic.csv");
     	arma::vec b = A*x;
     	arma::vec x0{libspgl1::matrix::n_cols<arma::mat>(A), arma::fill::zeros};
-    	std::cout << "number of columns" << libspgl1::matrix::n_cols<arma::mat>(A) << std::endl;
-    	std::cout << "x0: " << x0 << std::endl;
-    	std::cout << "number of elements" << libspgl1::vector::n_elem(x0) << std::endl;
+    	//std::cout << "number of columns" << libspgl1::matrix::n_cols<arma::mat>(A) << std::endl;
+    	//std::cout << "x0: " << x0 << std::endl;
+    	//std::cout << "number of elements" << libspgl1::vector::n_elem(x0) << std::endl;
     	//auto xnew = libspgl1::spgl1(A,At,b,x0);
     	//std::cout << b << std::endl;
     	//std::cout << libspgl1::math::norm<double>(b, 2.0) << std::endl;

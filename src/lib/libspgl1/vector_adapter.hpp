@@ -21,6 +21,17 @@ void set_element(VectorType& vector, const size_t index, ElementType value)
 	vector(index) = value;
 }
 
+template<typename VectorType>
+VectorType abs(const VectorType& x) {
+    VectorType x_abs = x;
+    auto n = libspgl1::vector::n_elem(x);
+    for (size_t i=0; i<n; i++){
+    	auto current_element = libspgl1::vector::get_element<double>(x, i);
+    	libspgl1::vector::set_element(x_abs, i, std::abs(current_element));
+    }
+    return x_abs;
+}
+
 template<typename ElementType, typename VectorType>
 ElementType dot(const VectorType& a, const VectorType& b){
 	const size_t n_elems = n_elem(a);

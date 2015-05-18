@@ -15,6 +15,7 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
        csb = 0,        /* Cumulative sum of b */
        alpha = 0,
        soft  = 0;  /* Soft thresholding value */
+   c = libspgl1::vector::abs(c);
    auto c_bar = c;
 //
 //   /* The vector xPtr[] is initialized to bPtr[] prior to the function call */
@@ -28,16 +29,16 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
    }
 
    /* Check if ||b||_1 <= lambda.  Exit with x = b. */
-   for (size_t i = 0; i < n; i++)
+   for (size_t i = 0; i < n; i++){
 	   csb += libspgl1::vector::get_element<double>(c_bar, i);
-   if (csb <= tau)
+   }
+   if (csb <= tau){
        return c_bar;
-
+   }
    std::make_heap(c_bar.begin(), c_bar.end());
 
    /* Initialise csb with -tau so we don't have to subtract this at every iteration */
    csb = -tau;
-
    /* Determine threshold value `soft' */
    for (size_t j = 0; j < n; j++)
    {
@@ -54,17 +55,20 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
 
       /* We are done as soon as the constraint can be satisfied    */
       /* without exceeding the current minimum value in `vector' b */
-      if (alpha >= b)
+      if (alpha >= b){
           break;
+      }
    }
 
    /* Set the solution by applying soft-thresholding with `soft' */
    for (size_t i = 0; i < n; i++)
    {  b = libspgl1::vector::get_element<double>(c, i);
-      if (b <= soft)
+      if (b <= soft){
            libspgl1::vector::set_element<double>(c_bar, i, 0);
-      else
+      }
+      else{
     	  libspgl1::vector::set_element<double>(c_bar, i, b - soft);
+      }
    }
 
    return c_bar;
