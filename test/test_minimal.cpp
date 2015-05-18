@@ -16,6 +16,7 @@ struct test_minimal : unittest::testcase<> {
         UNITTEST_RUN(test_NormL1_primal_with_weights_less_than_one)
         UNITTEST_RUN(test_parameters)
         UNITTEST_RUN(test_spgl1_basic_example)
+        UNITTEST_RUN(test_projectI)
         //UNITTEST_RUN(test_NormL1_primal_weights_cannot_be_negative)
         //UNITTEST_RUN(test_NormL1_primal_weights_should_be_less_than_or_equal_to_one)
     }
@@ -87,11 +88,24 @@ struct test_minimal : unittest::testcase<> {
     	arma::vec x;
     	x.load("/home/brock/workspace/libspgl1-code/test/x0_basic.csv");
     	arma::vec b = A*x;
-    	arma::vec x0{libspgl1::matrix::n_cols<arma::mat>(A)};
-    	x0.zeros();
-    	libspgl1::spgl1(A,At,b,x0);
+    	arma::vec x0{libspgl1::matrix::n_cols<arma::mat>(A), arma::fill::zeros};
+    	std::cout << "number of columns" << libspgl1::matrix::n_cols<arma::mat>(A) << std::endl;
+    	std::cout << "x0: " << x0 << std::endl;
+    	std::cout << "number of elements" << libspgl1::vector::n_elem(x0) << std::endl;
+    	//auto xnew = libspgl1::spgl1(A,At,b,x0);
     	//std::cout << b << std::endl;
     	//std::cout << libspgl1::math::norm<double>(b, 2.0) << std::endl;
+    }
+
+    void test_projectI(){
+    	arma::vec x_before_project;
+    	arma::vec x_after_project_expected;
+    	x_before_project.load("/home/brock/workspace/libspgl1-code/test/x_to_project.csv");
+    	x_after_project_expected.load("/home/brock/workspace/libspgl1-code/test/x_after_projection.csv");
+    	arma::vec x_after_project = projectI(x_before_project, 100.0, 128);
+    	std::cout << "norm1 before" << libspgl1::math::norm<double>(x_before_project, 1.0) << std::endl;
+    	std::cout << "norm1 after" << libspgl1::math::norm<double>(x_after_project, 1.0) << std::endl;
+    	std::cout << "norm1 expected" << libspgl1::math::norm<double>(x_after_project_expected, 1.0) << std::endl;
     }
 };
 REGISTER(test_minimal);
