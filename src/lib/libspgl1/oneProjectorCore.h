@@ -45,13 +45,18 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
 	  soft = alpha;
 	  /* Get current maximum heap element         */
 	  b = libspgl1::vector::get_element<double>(c_bar, 0);
-      std::pop_heap(c_bar.begin(), c_bar.end());
+	  std::pop_heap(c_bar.begin(), c_bar.end());
       csb += b;          /* Update the cumulative sum of b           */
 
       /* Move heap to next maximum value */
       std::pop_heap(c_bar.begin(),c_bar.end());
       /* Compute the required step to satisfy the tau constraint */
-      alpha  = csb / j;
+      alpha  = csb / (j+1);
+      std::cout << "\n alpha: " << alpha
+    		    << " j: " << j
+    		    << " csb: " << csb
+    		    << " b: " << b
+    		    << std::endl;
 
       /* We are done as soon as the constraint can be satisfied    */
       /* without exceeding the current minimum value in `vector' b */
