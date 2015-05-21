@@ -11,16 +11,14 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
 /* ----------------------------------------------------------------------- */
 {
    double
-       b,          /* Current element of vector b */
-       csb = 0,        /* Cumulative sum of b */
-       alpha = 0,
-       soft  = 0;  /* Soft thresholding value */
+       b = 0.0,          /* Current element of vector b */
+       csb  = 0.0,        /* Cumulative sum of b */
+       alpha = 0.0,
+       soft = 0.0;  /* Soft thresholding value */
    c = libspgl1::vector::abs(c);
    auto c_bar = c;
-//
-//   /* The vector xPtr[] is initialized to bPtr[] prior to the function call */
-//
-//   /* Check if tau is essentially zero.  Exit with x = 0. */
+
+   /* Check if tau is essentially zero.  Exit with x = 0. */
    if (tau < DBL_EPSILON) {
        for (size_t i = 0; i < n; i++){
     	   libspgl1::vector::set_element(c_bar, i, 0);
@@ -37,10 +35,9 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
    }
    std::make_heap(c_bar.begin(), c_bar.end());
    std::sort_heap(c_bar.begin(), c_bar.end());
-   std::cout << c_bar << std::endl;
 
    /* Initialise csb with -tau so we don't have to subtract this at every iteration */
-   csb = -tau;
+   csb = 0.0 - tau;
    /* Determine threshold value `soft' */
    for (size_t j = 0; j < n; j++)
    {
@@ -48,19 +45,10 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
 	  /* Get current maximum heap element         */
 	  b = libspgl1::vector::get_element<double>(c_bar, n-1-j);
 
-      //std::pop_heap(c_bar.begin(), c_bar.end());
-	  //std::make_heap(c_bar.begin(), c_bar.end());
       csb += b;          /* Update the cumulative sum of b           */
 
-      /* Move heap to next maximum value */
-      //std::pop_heap(c_bar.begin(),c_bar.end());
       /* Compute the required step to satisfy the tau constraint */
-      alpha  = csb / (j+1);
-      std::cout << "\n alpha: " << alpha
-    		    << " j: " << j
-    		    << " csb: " << csb
-    		    << " b: " << b
-    		    << std::endl;
+      alpha  = csb / (double(j)+1.0);
 
       /* We are done as soon as the constraint can be satisfied    */
       /* without exceeding the current minimum value in `vector' b */

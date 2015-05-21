@@ -112,10 +112,11 @@ struct test_minimal : unittest::testcase<> {
     	arma::vec x_after_project_expected;
     	x_before_project.load("/home/brock/workspace/libspgl1-code/test/x_to_project.csv");
     	x_after_project_expected.load("/home/brock/workspace/libspgl1-code/test/x_after_projection.csv");
-    	arma::vec x_after_project = projectI(x_before_project, 100.0, 128);
-    	std::cout << "norm1 before" << libspgl1::math::norm<double>(x_before_project, 1.0) << std::endl;
-    	std::cout << "norm1 after" << libspgl1::math::norm<double>(x_after_project, 1.0) << std::endl;
-    	std::cout << "norm1 expected" << libspgl1::math::norm<double>(x_after_project_expected, 1.0) << std::endl;
+    	arma::vec x_after_project = projectI(x_before_project, 100.0, libspgl1::vector::n_elem(x_before_project));
+    	double norm_actual   = libspgl1::math::norm<double>(x_after_project, 1.0);
+    	double norm_expected = libspgl1::math::norm<double>(x_after_project_expected, 1.0);
+    	assert_equal(norm_expected, norm_actual);
+    	assert_equal_containers(x_after_project_expected, x_after_project);
     }
 };
 REGISTER(test_minimal);
