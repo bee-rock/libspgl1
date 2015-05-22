@@ -3,5 +3,7 @@
 #include "matrix_adapter.hpp"
 #include "vector_adapter.hpp"
 #include "oneProjectorCore.h"
+#include "initialization.hpp"
+#include "parameters.hpp"
 #include "spgl1.hpp"
 

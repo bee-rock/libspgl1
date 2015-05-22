@@ -5,6 +5,9 @@
 #include <sys/types.h>
 #include <algorithm>
 
+namespace libspgl1 {
+
+
 /* ----------------------------------------------------------------------- */
 template<typename VectorType>
 VectorType projectI(VectorType& c, const double tau, const size_t n)
@@ -70,3 +73,5 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
 
    return c_bar;
 }
+
+} // libspgl1
