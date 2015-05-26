@@ -10,7 +10,7 @@ namespace libspgl1 {
 
 /* ----------------------------------------------------------------------- */
 template<typename VectorType>
-VectorType projectI(VectorType& c, const double tau, const size_t n)
+VectorType projectI(VectorType& c, const double tau)
 /* ----------------------------------------------------------------------- */
 {
    double
@@ -20,6 +20,7 @@ VectorType projectI(VectorType& c, const double tau, const size_t n)
        soft = 0.0;  /* Soft thresholding value */
    c = libspgl1::vector::abs(c);
    auto c_bar = c;
+   size_t n = libspgl1::vector::n_elem(c);
 
    /* Check if tau is essentially zero.  Exit with x = 0. */
    if (tau < DBL_EPSILON) {
