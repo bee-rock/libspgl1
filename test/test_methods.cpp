@@ -27,6 +27,9 @@ struct test_minimal : unittest::testcase<> {
         UNITTEST_RUN(test_spgl1_basic_example)
         UNITTEST_RUN(test_projectI)
         UNITTEST_RUN(test_initialization)
+        UNITTEST_RUN(test_abs)
+        UNITTEST_RUN(test_get_element)
+        UNITTEST_RUN(test_set_element)
         //UNITTEST_RUN(test_NormL1_primal_weights_cannot_be_negative)
         //UNITTEST_RUN(test_NormL1_primal_weights_should_be_less_than_or_equal_to_one)
     }
@@ -40,6 +43,30 @@ struct test_minimal : unittest::testcase<> {
     	assert_equal(2.0, libspgl1::vector::dot<double>(row_vector1, row_vector2));
     }
 
+    void test_abs()
+    {
+    	arma::vec vector1{1.0,-1.0};
+    	arma::vec result = libspgl1::vector::abs<arma::vec>(vector1);
+    	arma::vec expected{1.0,1.0};
+    	for (size_t i=0;i<libspgl1::vector::n_elem(vector1);i++){
+    		assert_equal(libspgl1::vector::get_element<double>(expected, i),
+    				     libspgl1::vector::get_element<double>(result, i));
+    	}
+    }
+
+    void test_get_element()
+    {
+    	arma::vec vector1{1.0};
+    	assert_equal(vector1(0), libspgl1::vector::get_element<double>(vector1,0));
+    }
+
+    void test_set_element()
+    {
+    	arma::vec vector1{1.0};
+    	double expected_new_element = 2.0;
+    	libspgl1::vector::set_element(vector1, 0, expected_new_element);
+    	assert_equal(expected_new_element, libspgl1::vector::get_element<double>(vector1,0));
+    }
 
     void test_norm_l1()
     {
