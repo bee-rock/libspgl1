@@ -263,6 +263,9 @@
 			<resource resourceType="PROJECT" workspacePath="/libspgl1-code"/>
 		</configuration>
 		<configuration configurationName="Debug-arrayfire"/>
+		<configuration configurationName="test_difference">
+			<resource resourceType="PROJECT" workspacePath="/libspgl1-code"/>
+		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
@@ -285,10 +288,16 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.192827088;cdt.managedbuild.config.gnu.exe.release.192827088.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.518110224;cdt.managedbuild.tool.gnu.cpp.compiler.input.1058952902">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.2021881319;cdt.managedbuild.config.gnu.exe.debug.2021881319.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.872662411;cdt.managedbuild.tool.gnu.cpp.compiler.input.1015596757">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.2021881319.1914159138.134953675;cdt.managedbuild.config.gnu.exe.debug.2021881319.1914159138.134953675.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1365585235;cdt.managedbuild.tool.gnu.c.compiler.input.1748804428">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.2021881319.1914159138.134953675;cdt.managedbuild.config.gnu.exe.debug.2021881319.1914159138.134953675.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1132381163;cdt.managedbuild.tool.gnu.cpp.compiler.input.332811312">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.2021881319;cdt.managedbuild.config.gnu.exe.debug.2021881319.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1584451139;cdt.managedbuild.tool.gnu.c.compiler.input.963020890">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.2021881319;cdt.managedbuild.config.gnu.exe.debug.2021881319.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.872662411;cdt.managedbuild.tool.gnu.cpp.compiler.input.1015596757">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>

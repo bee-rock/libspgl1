@@ -100,7 +100,7 @@ struct test_minimal : unittest::testcase<> {
     	arma::vec x_after_project_expected;
     	x_before_project.load("/home/brock/workspace/libspgl1-code/test/x_to_project.csv");
     	x_after_project_expected.load("/home/brock/workspace/libspgl1-code/test/x_after_projection.csv");
-    	arma::vec x_after_project = libspgl1::projectI(x_before_project, 100.0);
+    	arma::vec x_after_project = libspgl1::projectI(static_cast<arma::vec>(arma::abs(x_before_project)), 100.0);
     	double norm_actual   = libspgl1::math::norm<double>(x_after_project, 1.0);
     	double norm_expected = libspgl1::math::norm<double>(x_after_project_expected, 1.0);
     	assert_equal(norm_expected, norm_actual);
