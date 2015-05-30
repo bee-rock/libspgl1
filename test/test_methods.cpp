@@ -28,8 +28,10 @@ struct test_minimal : unittest::testcase<> {
         UNITTEST_RUN(test_projectI)
         UNITTEST_RUN(test_initialization)
         UNITTEST_RUN(test_abs)
+        UNITTEST_RUN(test_sign)
         UNITTEST_RUN(test_get_element)
         UNITTEST_RUN(test_set_element)
+        UNITTEST_RUN(test_elementwise_multiplication)
         //UNITTEST_RUN(test_NormL1_primal_weights_cannot_be_negative)
         //UNITTEST_RUN(test_NormL1_primal_weights_should_be_less_than_or_equal_to_one)
     }
@@ -48,6 +50,29 @@ struct test_minimal : unittest::testcase<> {
     	arma::vec vector1{1.0,-1.0};
     	arma::vec result = libspgl1::vector::abs<arma::vec>(vector1);
     	arma::vec expected{1.0,1.0};
+    	for (size_t i=0;i<libspgl1::vector::n_elem(vector1);i++){
+    		assert_equal(libspgl1::vector::get_element<double>(expected, i),
+    				     libspgl1::vector::get_element<double>(result, i));
+    	}
+    }
+
+    void test_sign()
+    {
+    	arma::vec vector1{2.0,-2.0};
+    	arma::vec result = libspgl1::vector::sign<arma::vec>(vector1);
+    	arma::vec expected{1.0,-1.0};
+    	for (size_t i=0;i<libspgl1::vector::n_elem(vector1);i++){
+    		assert_equal(libspgl1::vector::get_element<double>(expected, i),
+    				     libspgl1::vector::get_element<double>(result, i));
+    	}
+    }
+
+    void test_elementwise_multiplication()
+    {
+    	arma::vec vector1{2.0,-2.0};
+    	arma::vec vector2{2.0,3.0};
+    	arma::vec result = libspgl1::vector::elementwise_multiplication<arma::vec>(vector1, vector2);
+    	arma::vec expected{4.0,-6.0};
     	for (size_t i=0;i<libspgl1::vector::n_elem(vector1);i++){
     		assert_equal(libspgl1::vector::get_element<double>(expected, i),
     				     libspgl1::vector::get_element<double>(result, i));
