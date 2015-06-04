@@ -143,7 +143,8 @@ struct test_minimal : unittest::testcase<> {
     	arma::vec x;
     	x.load("/home/brock/workspace/libspgl1-code/test/x0_basic.csv");
     	arma::vec b = A*x;
-    	arma::vec x0{libspgl1::matrix::n_cols(A), arma::fill::zeros};
+    	//arma::vec x0{libspgl1::matrix::n_cols(A), arma::fill::zeros};
+    	arma::vec x0 = At*b;
     	arma::vec x_soln = libspgl1::spgl1(A, At, b, x0);
     }
 

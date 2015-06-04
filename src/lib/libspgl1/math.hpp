@@ -29,5 +29,30 @@ ElementType NormL1_primal(const VectorType& a, const VectorType& b)
 	return result;
 }
 
+template<typename ElementType, typename VectorType>
+double max(const VectorType& a){
+	double current_max = a[0];
+	const size_t n_elems = libspgl1::vector::n_elem(a);
+	for (size_t i=0; i<n_elems; ++i){
+		double current_elem = libspgl1::vector::get_element<ElementType>(a, i);
+		if (current_elem > current_max){
+			current_max = current_elem;
+		}
+	}
+	return current_max;
+}
+
+template<typename ElementType, typename VectorType>
+double min(const VectorType& a){
+	double current_min = a[0];
+	const size_t n_elems = libspgl1::vector::n_elem(a);
+	for (size_t i=0; i<n_elems; ++i){
+		double current_elem = libspgl1::vector::get_element<ElementType>(a, i);
+		if (current_elem < current_min){
+			current_min = current_elem;
+		}
+	}
+}
+
 } // math
 } // libspgl1
