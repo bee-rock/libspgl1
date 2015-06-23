@@ -16,6 +16,19 @@ namespace vector {
 
 struct test_minimal : unittest::testcase<> {
 
+	/*
+	 * The csv files in the examples below were generated using the MATLAB code
+	 * provided on the spgl1 website: https://www.math.ucdavis.edu/~mpf/spgl1/examples/spgexamples.html
+	 *
+	 * rand('twister',0); randn('state',0);
+	 * m = 50; n = 128; k = 14;                   % No. of rows (m), columns (n), and nonzeros (k)
+	 * [A,Rtmp] = qr(randn(n,m),0);               % Random encoding matrix with orthogonal rows
+	 * A  = A';                                   % ... A is m-by-n
+	 * p  = randperm(n); p = p(1:k);              % Location of k nonzeros in x
+	 * x0 = zeros(n,1); x0(p) = randn(k,1);       % The k-sparse solution
+	 * b  = A*x0;                                 % The right-hand side corresponding to x0
+	*/
+
     static void run()
     {
         UNITTEST_CLASS(test_minimal)
