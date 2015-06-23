@@ -11,8 +11,8 @@ namespace vector {
     	return arma::abs(a);
     }
 
-} // matrix
-} // project
+} // vector
+} // libspgl1
 
 struct test_minimal : unittest::testcase<> {
 
@@ -24,7 +24,7 @@ struct test_minimal : unittest::testcase<> {
         UNITTEST_RUN(test_norm_l2)
         UNITTEST_RUN(test_NormL1_primal_with_weighting_equal_to_one)
         UNITTEST_RUN(test_NormL1_primal_with_weights_less_than_one)
-        UNITTEST_RUN(test_spgl1_basic_example)
+        UNITTEST_RUN(test_execute_spgl1_method)
         UNITTEST_RUN(test_projectI)
         UNITTEST_RUN(test_initialization)
         UNITTEST_RUN(test_abs)
@@ -136,14 +136,13 @@ struct test_minimal : unittest::testcase<> {
     	assert_throw<std::invalid_argument>([&v, &weights](){ libspgl1::math::NormL1_primal<double>(v, weights); }, SPOT);
     }
 
-    void test_spgl1_basic_example(){
+    void test_execute_spgl1_method(){
     	arma::mat A;
     	A.load("/home/brock/workspace/libspgl1-code/test/A_basic.csv");
     	arma::mat At = A.t();
     	arma::vec x;
     	x.load("/home/brock/workspace/libspgl1-code/test/x0_basic.csv");
     	arma::vec b = A*x;
-    	//arma::vec x0{libspgl1::matrix::n_cols(A), arma::fill::zeros};
     	arma::vec x0 = At*b;
     	arma::vec x_soln = libspgl1::spgl1(A, At, b, x0);
     }

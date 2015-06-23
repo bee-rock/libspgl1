@@ -10,7 +10,7 @@ ElementType pow(const ElementType& x, const ElementType& p) {
 }
 
 template<typename ElementType, typename VectorType>
-double norm(const VectorType& a, const double& p){
+double norm(const VectorType& a, const double p){
 	double result{0};
 	const size_t n_elems = libspgl1::vector::n_elem(a);
 	for (size_t i=0; i<n_elems; ++i)
