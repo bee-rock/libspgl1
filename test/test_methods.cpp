@@ -1,6 +1,10 @@
 #include <libunittest/all.hpp>
-#include <libspgl1/all.hpp>
+#include <spgl1++/all.hpp>
 #include <armadillo>
+
+#ifndef DATADIR
+#define DATADIR "."
+#endif
 
 using namespace unittest::assertions;
 
@@ -151,10 +155,10 @@ struct test_minimal : unittest::testcase<> {
 
     void test_execute_spgl1_method(){
     	arma::mat A;
-    	A.load("/home/brock/workspace/libspgl1-code/test/A_basic.csv");
+    	A.load(std::string(DATADIR) + "/A_basic.csv");
     	arma::mat At = A.t();
     	arma::vec x;
-    	x.load("/home/brock/workspace/libspgl1-code/test/x0_basic.csv");
+    	x.load(std::string(DATADIR) + "/x0_basic.csv");
     	arma::vec b = A*x;
     	arma::vec x0 = At*b;
     	arma::vec x_soln = libspgl1::spgl1(A, At, b, x0);
@@ -163,8 +167,8 @@ struct test_minimal : unittest::testcase<> {
     void test_projectI(){
     	arma::vec x_before_project;
     	arma::vec x_after_project_expected;
-    	x_before_project.load("/home/brock/workspace/libspgl1-code/test/x_to_project.csv");
-    	x_after_project_expected.load("/home/brock/workspace/libspgl1-code/test/x_after_projection.csv");
+    	x_before_project.load(std::string(DATADIR) + "/x_to_project.csv");
+    	x_after_project_expected.load(std::string(DATADIR) + "/x_after_projection.csv");
     	arma::vec x_after_project = libspgl1::projectI(static_cast<arma::vec>(arma::abs(x_before_project)), 100.0);
     	double norm_actual   = libspgl1::math::norm<double>(x_after_project, 1.0);
     	double norm_expected = libspgl1::math::norm<double>(x_after_project_expected, 1.0);
@@ -174,10 +178,10 @@ struct test_minimal : unittest::testcase<> {
 
     void test_initialization(){
     	arma::mat A;
-    	A.load("/home/brock/workspace/libspgl1-code/test/A_basic.csv");
+    	A.load(std::string(DATADIR) + "/A_basic.csv");
     	arma::mat At = A.t();
     	arma::vec x;
-    	x.load("/home/brock/workspace/libspgl1-code/test/x0_basic.csv");
+    	x.load(std::string(DATADIR) + "/x0_basic.csv");
     	arma::vec b = A*x;
     	arma::vec r = libspgl1::initialization::compute_r(A, b, x);
     	double f = libspgl1::initialization::compute_f(r);

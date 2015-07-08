@@ -2,8 +2,8 @@
 #include "math.hpp"
 #include "matrix_adapter.hpp"
 #include "vector_adapter.hpp"
-#include "oneProjectorCore.h"
+#include "oneProjectorCore.hpp"
 #include "initialization.hpp"
 #include "parameters.hpp"
-#include "spgl1.hpp"
+#include "spgl1++.hpp"
 
