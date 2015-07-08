@@ -6,4 +6,4 @@
 #include "initialization.hpp"
 #include "parameters.hpp"
 #include "spgl1++.hpp"
-
+#include "activeVars.hpp"
