@@ -2,8 +2,8 @@ namespace libspgl1 {
 namespace matrix {
 
 template<typename MatrixType, typename VectorType>
-VectorType matvec(const MatrixType& a, const VectorType& b){
-	return a * b;
+VectorType matvec(const MatrixType& A, const VectorType& b){
+	return A * b;
 }
 
 template<typename MatrixType>

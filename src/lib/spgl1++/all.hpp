@@ -7,3 +7,4 @@
 #include "parameters.hpp"
 #include "spgl1++.hpp"
 #include "activeVars.hpp"
+#include "spgLineCurvy.hpp"

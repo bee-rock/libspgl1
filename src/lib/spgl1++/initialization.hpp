@@ -5,13 +5,14 @@ namespace initialization {
 	VectorType compute_r(const MatrixType& A,
 						 const VectorType& b,
 						 const VectorType& x){
-		return b - A*x;
+
+		return b - libspgl1::matrix::matvec(A, x);
 	}
 
 	template<typename MatrixType, typename VectorType>
 	VectorType compute_g(const MatrixType& At,
 						 const VectorType& r){
-		return -At*r;
+		return -libspgl1::matrix::matvec(At, r);
 	}
 
 	template<typename VectorType>

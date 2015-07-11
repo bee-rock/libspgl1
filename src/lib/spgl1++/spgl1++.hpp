@@ -1,17 +1,23 @@
+#pragma once
 #include <algorithm>
 #include <limits>
+#include "spgLineCurvy.hpp"
 
 namespace libspgl1 {
 
 
 template<typename MatrixType, typename VectorType>
 VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b, const VectorType& x0){
+	std::cout.precision(15);
 	libspgl1::Parameters parameters = libspgl1::Parameters(b);
 	VectorType sign_x = libspgl1::vector::sign<VectorType>(x0);
 	VectorType x = libspgl1::projectI<VectorType>(x0, parameters.tau);
+	auto xOld = x;
 	VectorType r = libspgl1::initialization::compute_r(A, b, x);
+	auto rOld = r;
 	double f = libspgl1::initialization::compute_f(r);
 	VectorType g = libspgl1::initialization::compute_g(At, r);
+	auto gOld = g;
 	VectorType dx = libspgl1::projectI<VectorType>(x-g, parameters.tau)-x;
 	double dxNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(dx));
 	double gStep = libspgl1::initialization::compute_gstep(dxNorm,
@@ -31,8 +37,10 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
     for (size_t i=0; i<nPrevVals; i++){
     	libspgl1::vector::set_element(lastFv, i, std::numeric_limits<int>::max());
     }
-
-	while(true){
+    double tauOld{0};
+    bool exit = false;
+    int iter = 0;
+	for(size_t i=0;i<parameters.outer_iterations;++i){
 		double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-g));
 		std::cout << "gNorm: " << gNorm << std::endl;
 		double rNorm = libspgl1::math::norm<double>(r, 2);
@@ -59,13 +67,13 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 
 		if (rGap <= std::max(parameters.optTol, rError2) || rError1 <= parameters.optTol ){
 			if (rNorm       <=   parameters.bpTol * bNorm){
-				break;
+				exit = true;
 			}
 			if (rError1     <=  parameters.optTol){
-				break;
+				exit = true;
 			}
 			if (rNorm       <=  sigma){
-				break;
+				exit = true;
 			}
 		}
 		bool testRelChange1 = (std::abs(f - fOld) <= parameters.decTol * f);
@@ -73,20 +81,38 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 		bool testUpdateTau  = ((testRelChange1 && rNorm >  2 * sigma) ||
 							   (testRelChange2 && rNorm <= 2 * sigma)) && !testUpdateTau;
 
+
+		std::cout << "testRelChange1: " << testRelChange1 << std::endl;
+		std::cout << "testRelChange2: " << testRelChange2 << std::endl;
+		std::cout << "testUpdateTau: " << testUpdateTau << std::endl;
+
 	    if(testUpdateTau){
-	          double tauOld   = parameters.tau;
+	          tauOld   = parameters.tau;
+	  		  std::cout << "tauOld: " << tauOld << std::endl;
 	          parameters.tau  = std::max(0.0, parameters.tau + (rNorm * aError1) / gNorm);
+	  		  std::cout << "parameters.tau: " << parameters.tau << std::endl;
 	          nNewton  = nNewton + 1;
 	          if (parameters.tau < tauOld){
 	             x = libspgl1::projectI<VectorType>(x, parameters.tau);
-
-	             r = b - A*x;
-	             g =   - At*r;
-	             f = libspgl1::vector::dot<double>(r,r) / 2.0;
+	         	 r = libspgl1::initialization::compute_r(A, b, x);
+	         	 f = libspgl1::initialization::compute_f(r);
+	         	 g = libspgl1::initialization::compute_g(At, r);
 	             libspgl1::vector::set_element(lastFv, 1, f);
 	          }
 	    }
-		break;
+
+	    if(exit){
+	    	break;
+	    }
+
+	    iter = iter + 1;
+	    xOld = x;
+	    fOld = f;
+	    gOld = g;
+	    rOld = r;
+
+	    auto v = libspgl1::spgLineCurvy<MatrixType, VectorType>(A, x, parameters, b, g, libspgl1::math::max<double>(lastFv));
+
 	}
 
     return dx;

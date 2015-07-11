@@ -16,4 +16,5 @@ spgl1++/matrix_adapter.hpp \
 spgl1++/oneProjectorCore.hpp \
 spgl1++/parameters.hpp \
 spgl1++/spgl1++.hpp \
-spgl1++/vector_adapter.hpp
+spgl1++/vector_adapter.hpp \
+spgl1++/spgLineCurvy.hpp
