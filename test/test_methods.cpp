@@ -58,6 +58,7 @@ struct test_minimal : unittest::testcase<> {
         UNITTEST_RUN(test_get_element)
         UNITTEST_RUN(test_set_element)
         UNITTEST_RUN(test_elementwise_multiplication)
+        UNITTEST_RUN(test_max)
         //UNITTEST_RUN(test_NormL1_primal_weights_cannot_be_negative)
         //UNITTEST_RUN(test_NormL1_primal_weights_should_be_less_than_or_equal_to_one)
     }
@@ -113,16 +114,25 @@ struct test_minimal : unittest::testcase<> {
 
     void test_set_element()
     {
-    	arma::vec vector1{1.0};
-    	double expected_new_element = 2.0;
-    	libspgl1::vector::set_element(vector1, 0, expected_new_element);
-    	assert_equal(expected_new_element, libspgl1::vector::get_element<double>(vector1,0));
+    	arma::vec vector1{1.0, 5.0};
+    	size_t element_index = 1;
+    	double expected_new_element = 10.0;
+    	libspgl1::vector::set_element(vector1, element_index, expected_new_element);
+    	assert_equal(expected_new_element, libspgl1::vector::get_element<double>(vector1, element_index));
     }
 
     void test_norm_l1()
     {
     	arma::vec a = {-1,1};
     	assert_equal(2.0, libspgl1::math::norm<double>(a, 1));
+    }
+
+    void test_max()
+    {
+    	arma::vec a1 = {-1,1};
+    	arma::vec a2 = {-100, 0, 50};
+    	assert_equal(1.0, libspgl1::math::max<double>(a1));
+    	assert_equal(50.0, libspgl1::math::max<double>(a2));
     }
 
     void test_norm_l2()
@@ -196,13 +206,15 @@ struct test_minimal : unittest::testcase<> {
     void test_projectI(){
     	arma::vec x_before_project;
     	arma::vec x_after_project_expected;
+
     	x_before_project.load(std::string(DATADIR) + "/x_to_project.csv");
     	x_after_project_expected.load(std::string(DATADIR) + "/x_after_projection.csv");
-    	arma::vec x_after_project = libspgl1::projectI(static_cast<arma::vec>(arma::abs(x_before_project)), 100.0);
+
+    	arma::vec x_after_project = libspgl1::projectI(x_before_project, 100.0);
     	double norm_actual   = libspgl1::math::norm<double>(x_after_project, 1.0);
     	double norm_expected = libspgl1::math::norm<double>(x_after_project_expected, 1.0);
-    	assert_equal(norm_expected, norm_actual);
-    	assert_equal_containers(x_after_project_expected, x_after_project);
+    	assert_approx_equal(norm_expected, norm_actual, 0.00001, SPOT);
+    	//assert_approx_equal_containers(x_after_project_expected, x_after_project, 0.00001, SPOT);
     }
 
     void test_initialization(){

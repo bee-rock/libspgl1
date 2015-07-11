@@ -39,19 +39,22 @@ spgLineCurvyVars<VectorType> spgLineCurvy(const MatrixType &A, VectorType &x, li
 
 	while(true){
 		v.xNew = libspgl1::projectI<VectorType>(x - v.step*scale*g, parameters.tau);
-	    v.rNew = libspgl1::initialization::compute_r(A, b, v.xNew);
+		v.rNew = libspgl1::initialization::compute_r(A, b, v.xNew);
 	    v.fNew = libspgl1::initialization::compute_f(v.rNew);
 	    s = v.xNew - x;
 	    double gts = scale * libspgl1::vector::dot<double>(g, s);
 	    if(gts >= 0){
+			std::cout << "no descent" << std::endl;
 	    	v.EXIT_CONVERGED = false;
 	    	return v;
 	    }
 
 	    if(v.fNew < fMax + gamma*v.step*gts){
+			std::cout << "converged" << std::endl;
 	    	v.EXIT_CONVERGED = true;
 	    	return v;
 	    }else if(v.iter >= maxIts){
+			std::cout << "max its" << std::endl;
 	    	v.EXIT_CONVERGED = false;
 	    	return v;
 	    }
@@ -65,6 +68,12 @@ spgLineCurvyVars<VectorType> spgLineCurvy(const MatrixType &A, VectorType &x, li
 	    	scale = sNorm / gNorm / (2^nSafe);
 	        nSafe = nSafe + 1;
 	    }
+
+		std::cout << "v.fNew" << v.fNew << std::endl;
+		std::cout << "v.xNew" << v.xNew << std::endl;
+		std::cout << "v.rNew" << v.rNew << std::endl;
+		std::cout << "v.iter" << v.iter << std::endl;
+
 	}
 }
 }

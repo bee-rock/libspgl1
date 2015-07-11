@@ -35,8 +35,9 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
     size_t nPrevVals = 10;
     VectorType lastFv(nPrevVals);
     for (size_t i=0; i<nPrevVals; i++){
-    	libspgl1::vector::set_element(lastFv, i, std::numeric_limits<int>::max());
+    	libspgl1::vector::set_element(lastFv, i, -std::numeric_limits<int>::max());
     }
+    libspgl1::vector::set_element(lastFv, 0, f);
     double tauOld{0};
     bool exit = false;
     int iter = 0;
@@ -97,7 +98,10 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 	         	 r = libspgl1::initialization::compute_r(A, b, x);
 	         	 f = libspgl1::initialization::compute_f(r);
 	         	 g = libspgl1::initialization::compute_g(At, r);
-	             libspgl1::vector::set_element(lastFv, 1, f);
+	             for (size_t i=0; i<nPrevVals; i++){
+	             	libspgl1::vector::set_element(lastFv, i, -std::numeric_limits<int>::max());
+	             }
+	             libspgl1::vector::set_element(lastFv, 0, f);
 	          }
 	    }
 
@@ -110,8 +114,12 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 	    fOld = f;
 	    gOld = g;
 	    rOld = r;
+	    VectorType g_tmp  = gStep*g;
+	    std::cout << "f: " << f << std::endl;
 
-	    auto v = libspgl1::spgLineCurvy<MatrixType, VectorType>(A, x, parameters, b, g, libspgl1::math::max<double>(lastFv));
+	    std::cout << "libspgl1::math::max<double>(lastFv): " << libspgl1::math::max<double>(lastFv) << std::endl;
+
+	    auto v = libspgl1::spgLineCurvy<MatrixType, VectorType>(A, x, parameters, b, g_tmp, libspgl1::math::max<double>(lastFv));
 
 	}
 
