@@ -42,7 +42,6 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
     bool exit = false;
     int iter = 0;
 	while(true){
-    //for(size_t i=0;i<10000;++i){
 		double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-g));
 		double rNorm = libspgl1::math::norm<double>(r, 2);
 		VectorType residual_minus_measurements = r-b;

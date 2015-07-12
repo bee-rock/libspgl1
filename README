@@ -1,5 +1,26 @@
-spgl1++ is a C++ library for solving the basis pursuit denoise problem.
+spgl1++ is a C++ library for solving the basis pursuit problem.
+
+1. Basis pursuit (BP):
+   minimize  ||x||_1  subject to  Ax=b,
+
+(In development):
+2. Basis pursuit denoise (BPDN):
+   minimize  ||x||_1  subject to  ||Ax - b||_2 <= sigma,
+
+At the moment, only real measurements are supported.
 
 To build and run the tests the following libraries are required:
 - armadillo (http://arma.sourceforge.net)
 - libunittest (http://libunittest.sourceforge.net)
+
+spgl1++ uses Autotools for managing compilation and installation:
+
+To configure it for your system:
+> ./configure
+
+Compile, run tests, and install
+> make
+> make check
+> make install
+
+To see how to call spgl1++, refer to the test code.
