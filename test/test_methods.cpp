@@ -8,16 +8,6 @@
 
 using namespace unittest::assertions;
 
-//namespace libspgl1 {
-//namespace vector {
-//	template<>
-//    arma::vec abs(const arma::vec& a){
-//    	return arma::abs(a);
-//    }
-//
-//} // vector
-//} // libspgl1
-
 namespace libspgl1 {
 namespace matrix{
 	template<>
@@ -179,28 +169,10 @@ struct test_minimal : unittest::testcase<> {
     	arma::vec x;
     	x.load(std::string(DATADIR) + "/x0_basic.csv");
     	arma::vec b = A*x;
-    	arma::vec x0 = At*b;
+    	arma::vec x0 = arma::colvec(x.n_rows); //initial guess
+    	x0.zeros(); //initial guess all zeros
     	arma::vec x_soln = libspgl1::spgl1(A, At, b, x0);
-
-    	/*
-    	f: 3.66216503085451
-    	gstep: 100000
-    	gNorm: 1.00110911978155
-    	rNorm: 2.70634995181869
-    	gap: 0
-    	rGap: 0
-    	aError1: 2.70634995181869
-    	aError2: 3.66216503085451
-    	rError1: 1
-    	rError2: 1
-    	testRelChange1: 1
-    	testRelChange2: 1
-    	testUpdateTau: 1
-    	tauOld: 0
-        parameters.tau: 7.31621550236924 */
-
-
-
+    	assert_approx_equal_containers(x, x_soln, 0.0001, SPOT);
     }
 
     void test_projectI(){

@@ -7,13 +7,6 @@ spgLineCurvyVars<VectorType> spgLine(const MatrixType &A, VectorType &x, const V
 	spgLineCurvyVars <VectorType>v(x);
 	double gamma  = 1e-4;
 	size_t maxIts = 10;
-	double sNorm  =  0.0;
-	double gNorm = 0.0;
-	double sNormOld = 0.0;
-	double scale  =  1.0;      // Safeguard scaling.  (See below.)
-	int nSafe  =  0;      // No. of safeguarding steps.
-	size_t n = libspgl1::vector::n_elem(x);
-
 	gtd    = -std::abs(gtd);
 
 	while(true){
@@ -34,7 +27,7 @@ spgLineCurvyVars<VectorType> spgLine(const MatrixType &A, VectorType &x, const V
 	    if(v.step <= 0.1){
 	       v.step  = v.step / 2.0;
 	    } else {
-	       auto tmp = (-gtd*std::pow(v.step,2)) / (2.0*(v.fNew-f-v.step*gtd));
+	       auto tmp = (-gtd*std::pow(v.step, 2.0)) / (2.0*(v.fNew-f-v.step*gtd));
 	       if(tmp < 0.1 || tmp > 0.9*v.step){
 	          tmp = v.step / 2.0;
 	       }

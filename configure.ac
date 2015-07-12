@@ -1,4 +1,4 @@
-AC_INIT([spgl1++],[0.0.0],[brock.hargreaves@gmail.com],[spgl1++],[http://sourceforge.net/projects/libspgl1/])
+AC_INIT([spgl1++],[0.0.1],[brock.hargreaves@gmail.com],[spgl1++],[http://sourceforge.net/projects/libspgl1/])
 AC_CONFIG_SRCDIR([src/lib/spgl1++/all.hpp])
 AC_CONFIG_HEADERS([src/lib/config.hpp])
 AC_CONFIG_MACRO_DIR([m4])

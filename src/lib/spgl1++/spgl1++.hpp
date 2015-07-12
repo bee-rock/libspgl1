@@ -31,17 +31,19 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 	double sigma = 0.0;
 	double bNorm = libspgl1::math::norm<double>(b, 2.0);
     size_t nNewton  = 0;
-    size_t nPrevVals = 10;
+    size_t nPrevVals = 3;
     size_t nLineTot = 0;
+
     VectorType lastFv(nPrevVals);
     for (size_t i=0; i<nPrevVals; i++){
-    	libspgl1::vector::set_element(lastFv, i, -std::numeric_limits<int>::max());
+    	libspgl1::vector::set_element<double>(lastFv, i, -std::numeric_limits<double>::max());
     }
-    libspgl1::vector::set_element(lastFv, 0, f);
+    libspgl1::vector::set_element<double>(lastFv, 0.0, f);
     double tauOld{0};
     bool exit = false;
     int iter = 0;
-	for(size_t i=0;i<parameters.outer_iterations;++i){
+	//while(true){
+    for(size_t i=0;i<parameters.outer_iterations;++i){
 		double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-g));
 		double rNorm = libspgl1::math::norm<double>(r, 2);
 		VectorType residual_minus_measurements = r-b;
@@ -49,8 +51,8 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 		double rGap = std::abs(gap) / std::max(1.0,f);
 		double aError1 = rNorm - sigma;
 		double aError2 = f - std::pow(sigma, 2) / 2.0;
-		double rError1 = std::abs(aError1) / std::max(1.0,rNorm);
-		double rError2 = std::abs(aError2) / std::max(1.0,f);
+		double rError1 = std::abs(aError1) / std::max(1.0, rNorm);
+		double rError2 = std::abs(aError2) / std::max(1.0, f);
 		if (rGap <= std::max(parameters.optTol, rError2) || rError1 <= parameters.optTol ){
 			if (rNorm       <=   parameters.bpTol * bNorm){
 				exit = true;
@@ -63,9 +65,9 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 			}
 		}
 		bool testRelChange1 = (std::abs(f - fOld) <= parameters.decTol * f);
-		bool testRelChange2 = (std::abs(f - fOld) <= 1e-1 * f * (abs(rNorm - sigma)));
-		bool testUpdateTau  = ((testRelChange1 && rNorm >  2 * sigma) ||
-							   (testRelChange2 && rNorm <= 2 * sigma)) && !testUpdateTau;
+		bool testRelChange2 = (std::abs(f - fOld) <= 0.1 * f * (std::abs(rNorm - sigma)));
+		bool testUpdateTau  = ((testRelChange1 && rNorm >  2.0 * sigma) ||
+							   (testRelChange2 && rNorm <= 2.0 * sigma)) && !testUpdateTau;
 
 	    if(testUpdateTau){
 	          tauOld   = parameters.tau;
@@ -77,9 +79,9 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 	         	 f = libspgl1::initialization::compute_f(r);
 	         	 g = libspgl1::initialization::compute_g(At, r);
 	             for (size_t i=0; i<nPrevVals; i++){
-	             	libspgl1::vector::set_element(lastFv, i, -std::numeric_limits<int>::max());
+	             	libspgl1::vector::set_element<double>(lastFv, i, -std::numeric_limits<double>::max());
 	             }
-	             libspgl1::vector::set_element(lastFv, 0, f);
+	             libspgl1::vector::set_element<double>(lastFv, 0.0, f);
 	          }
 	    }
 
@@ -95,6 +97,11 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 	    VectorType g_tmp  = gStep*g;
 	    auto v = libspgl1::spgLineCurvy<MatrixType, VectorType>(
 	    		A, x, parameters, b, g_tmp, libspgl1::math::max<double>(lastFv));
+
+	    f = v.fNew;
+	    x = v.xNew;
+	    r = v.rNew;
+
 	    nLineTot = nLineTot + v.iter;
 	   if(~v.EXIT_CONVERGED){
 		  x    = xOld;
@@ -102,17 +109,20 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 		  r    = rOld;
 		  dx   = libspgl1::projectI<VectorType>(x - gStep*g, parameters.tau) - x;
 		  double gtd  = libspgl1::vector::dot<double>(g,dx);
-		  auto v = libspgl1::spgLine<MatrixType, VectorType>(
+		  auto v1 = libspgl1::spgLine<MatrixType, VectorType>(
 				 A, x, b, f, libspgl1::math::max<double>(lastFv), gtd, dx);
-		  nLineTot = nLineTot + v.iter;
+		    f = v1.fNew;
+		    x = v1.xNew;
+		    r = v1.rNew;
+		  nLineTot = nLineTot + v1.iter;
 	   }
 
        if (v.EXIT_CONVERGED){
     	   g = libspgl1::initialization::compute_g(At, r);
     	   VectorType s    = x - xOld;
     	   VectorType y    = g - gOld;
-    	   auto sts  = libspgl1::vector::dot<double>(s,s);
-    	   auto sty  = libspgl1::vector::dot<double>(s,y);
+    	   double sts  = libspgl1::vector::dot<double>(s,s);
+    	   double sty  = libspgl1::vector::dot<double>(s,y);
     	   if(sty <= 0){
     		   gStep = parameters.stepmax;
     	   } else{
@@ -122,9 +132,17 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
        }else{
           gStep = std::min(parameters.stepmax, gStep);
        }
+
+       if(f > (std::pow(sigma,2) / 2.0)){
+          lastFv((iter % nPrevVals)) = f;
+          if(fBest > f){
+             fBest = f;
+             xBest = x;
+          }
+       }
 	}
 
-    return dx;
+    return x;
 }
 
 } // libspgl1

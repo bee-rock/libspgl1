@@ -5,7 +5,7 @@ namespace libspgl1 {
 namespace math {
 
 template<typename ElementType>
-ElementType pow(const ElementType& x, const ElementType& p) {
+double pow(const double x, const double p) {
     return std::pow(x, p);
 }
 

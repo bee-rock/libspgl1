@@ -16,7 +16,7 @@ struct Parameters {
 		Parameters(const VectorType& b) :
 			max_iterations(3*libspgl1::vector::n_elem(b)), bpTol(1e-06),
 			lsTol(1e-06), optTol(1e-04), decTol(1e-04), stepmin(1e-16),
-			stepmax(1e+05), is_complex(false), tau(0.0), outer_iterations(1)
+			stepmax(1e+05), is_complex(false), tau(0.0), outer_iterations(400)
 		{}
 	};
 

@@ -13,11 +13,11 @@ struct spgLineCurvyVars {
 	bool EXIT_CONVERGED;
 
 	spgLineCurvyVars(VectorType &x) :
-		fNew(0),
+		fNew(0.0),
 		xNew(x),
 		rNew(x),
 		iter(0),
-		step(1),
+		step(1.0),
 		err(0),
 		EXIT_CONVERGED(false)
 		{}
@@ -60,10 +60,10 @@ spgLineCurvyVars<VectorType> spgLineCurvy(const MatrixType &A, VectorType &x, li
 	    v.step = v.step / 2.0;
 
 	    sNormOld  = sNorm;
-	    sNorm     = libspgl1::math::norm<double>(s, 2.0) / std::sqrt(n);
+	    sNorm     = libspgl1::math::norm<double>(s, 2.0) / std::sqrt(double(n));
 	    if(std::abs(sNorm - sNormOld) <= 1e-6 * sNorm){
-	    	gNorm = libspgl1::math::norm<double>(g, 2.0) / sqrt(n);
-	    	scale = sNorm / gNorm / (2^nSafe);
+	    	gNorm = libspgl1::math::norm<double>(g, 2.0) / std::sqrt(double(n));
+	    	scale = sNorm / gNorm / std::pow(2.0, nSafe);
 	        nSafe = nSafe + 1;
 	    }
 	}
