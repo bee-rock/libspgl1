@@ -50,11 +50,9 @@ spgLineCurvyVars<VectorType> spgLineCurvy(const MatrixType &A, VectorType &x, li
 	    }
 
 	    if(v.fNew < fMax + gamma*v.step*gts){
-			std::cout << "converged" << std::endl;
 	    	v.EXIT_CONVERGED = true;
 	    	return v;
 	    }else if(v.iter >= maxIts){
-			std::cout << "max its" << std::endl;
 	    	v.EXIT_CONVERGED = false;
 	    	return v;
 	    }
@@ -68,12 +66,6 @@ spgLineCurvyVars<VectorType> spgLineCurvy(const MatrixType &A, VectorType &x, li
 	    	scale = sNorm / gNorm / (2^nSafe);
 	        nSafe = nSafe + 1;
 	    }
-
-		std::cout << "v.fNew" << v.fNew << std::endl;
-		std::cout << "v.xNew" << v.xNew << std::endl;
-		std::cout << "v.rNew" << v.rNew << std::endl;
-		std::cout << "v.iter" << v.iter << std::endl;
-
 	}
 }
 }
