@@ -13,7 +13,7 @@ size_t n_cols(const MatrixType& a){
 
 template<typename MatrixType>
 size_t n_rows(const MatrixType& a){
-	return a.n_rows();
+	return a.n_rows;
 }
 } // matrix
 } // libspgl1

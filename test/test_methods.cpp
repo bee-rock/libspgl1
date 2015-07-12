@@ -168,11 +168,13 @@ struct test_minimal : unittest::testcase<> {
     	arma::mat At = A.t();
     	arma::vec x;
     	x.load(std::string(DATADIR) + "/x0_basic.csv");
+    	arma::vec x_soln_from_matlab;
+    	x_soln_from_matlab.load(std::string(DATADIR) + "/x_soln.csv");
     	arma::vec b = A*x;
     	arma::vec x0 = arma::colvec(x.n_rows); //initial guess
     	x0.zeros(); //initial guess all zeros
     	arma::vec x_soln = libspgl1::spgl1(A, At, b, x0);
-    	assert_approx_equal_containers(x, x_soln, 0.0001, SPOT);
+    	assert_approx_equal_containers(x_soln_from_matlab, x_soln, 1e-10, SPOT);
     }
 
     void test_projectI(){

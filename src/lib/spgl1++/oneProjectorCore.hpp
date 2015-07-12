@@ -25,7 +25,7 @@ VectorType projectI(const VectorType& c, const double tau)
    /* Check if tau is essentially zero.  Exit with x = 0. */
    if (tau < DBL_EPSILON) {
        for (size_t i = 0; i < n; i++){
-    	   libspgl1::vector::set_element<double>(c_bar, i, 0);
+    	   libspgl1::vector::set_element<double>(c_bar, i, 0.0);
        	   }
        return c_bar;
    }
@@ -35,7 +35,8 @@ VectorType projectI(const VectorType& c, const double tau)
 	   csb += libspgl1::vector::get_element<double>(c_bar, i);
    }
    if (csb <= tau){
-	   libspgl1::vector::elementwise_multiplication<VectorType>(c_bar, sign_c);
+	   //libspgl1::vector::elementwise_multiplication<VectorType>(c_bar, sign_c);
+	   return c;
    }
    std::make_heap(c_bar.begin(), c_bar.end());
    std::sort_heap(c_bar.begin(), c_bar.end());

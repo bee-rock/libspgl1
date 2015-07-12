@@ -1,7 +1,7 @@
 # the library names to build
 #lib_LTLIBRARIES = libspgl1++.la
 
-libspgl1++_la_LDFLAGS = -version-info 0:0:1 -no-undefined
+libspgl1++_la_LDFLAGS = -version-info 0:0:2 -no-undefined
 
 # where to install the headers on the system
 libspgl1++_ladir = $(includedir)/spgl1++

@@ -9,7 +9,6 @@ namespace libspgl1 {
 
 template<typename MatrixType, typename VectorType>
 VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b, const VectorType& x0){
-	std::cout.precision(15);
 	libspgl1::Parameters parameters = libspgl1::Parameters(b);
 	VectorType sign_x = libspgl1::vector::sign<VectorType>(x0);
 	VectorType x = libspgl1::projectI<VectorType>(x0, parameters.tau);
@@ -42,8 +41,8 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
     double tauOld{0};
     bool exit = false;
     int iter = 0;
-	//while(true){
-    for(size_t i=0;i<parameters.outer_iterations;++i){
+	while(true){
+    //for(size_t i=0;i<10000;++i){
 		double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-g));
 		double rNorm = libspgl1::math::norm<double>(r, 2);
 		VectorType residual_minus_measurements = r-b;
@@ -53,6 +52,7 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 		double aError2 = f - std::pow(sigma, 2) / 2.0;
 		double rError1 = std::abs(aError1) / std::max(1.0, rNorm);
 		double rError2 = std::abs(aError2) / std::max(1.0, f);
+
 		if (rGap <= std::max(parameters.optTol, rError2) || rError1 <= parameters.optTol ){
 			if (rNorm       <=   parameters.bpTol * bNorm){
 				exit = true;
@@ -101,9 +101,8 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 	    f = v.fNew;
 	    x = v.xNew;
 	    r = v.rNew;
-
 	    nLineTot = nLineTot + v.iter;
-	   if(~v.EXIT_CONVERGED){
+	   if(!v.EXIT_CONVERGED){
 		  x    = xOld;
 		  f    = fOld;
 		  r    = rOld;
