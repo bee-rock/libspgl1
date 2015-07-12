@@ -5,7 +5,8 @@ EXTRA_DIST = \
 A_basic.csv \
 x_after_projection.csv \
 x_to_project.csv \
-x0_basic.csv
+x0_basic.csv \
+x_soln.csv
 
 unittest_SOURCES = \
 test_methods.cpp
