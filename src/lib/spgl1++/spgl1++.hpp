@@ -6,18 +6,47 @@
 
 namespace libspgl1 {
 
+template<typename VectorType>
+struct residuals {
+	residuals(const VectorType &r, Parameters parameters){}
+	VectorType residual_minus_measurements = r-b;
+	double rNorm = libspgl1::math::norm<double>(r, 2);
+	double aError1 = rNorm - sigma;
+	double aError2 = f - std::pow(sigma, 2) / 2.0;
+	double rError1 = std::abs(aError1) / std::max(1.0, rNorm);
+	double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-g));
+	double gap = libspgl1::vector::dot<double>(r, residual_minus_measurements) + parameters.tau*gNorm;
+	double rGap = std::abs(gap) / std::max(1.0,f);
+	double rError2 = std::abs(aError2) / std::max(1.0, f);
+
+	VectorType x;
+	VectorType xOld;
+	VectorType g;
+	VectorType gOld;
+	VectorType r;
+	VectorType b;
+	double f;
+	double fOld;
+	double sigma;
+	Parameters parameters;
+};
 
 template<typename MatrixType, typename VectorType>
-VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b, const VectorType& x0){
+VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b, const VectorType &x0)
+{
 	libspgl1::Parameters parameters = libspgl1::Parameters(b);
-	VectorType sign_x = libspgl1::vector::sign<VectorType>(x0);
+	VectorType sign_x = libspgl1::vector::sign<VectorType>(x0); //This variable is unused but if I remove it then everything breaks
+
+	// Project the starting point and evaluate function and gradient.
 	VectorType x = libspgl1::projectI<VectorType>(x0, parameters.tau);
-	auto xOld = x;
+	VectorType xOld = x;
 	VectorType r = libspgl1::initialization::compute_r(A, b, x);
-	auto rOld = r;
+	VectorType rOld = r;
 	double f = libspgl1::initialization::compute_f(r);
 	VectorType g = libspgl1::initialization::compute_g(At, r);
-	auto gOld = g;
+	VectorType gOld = g;
+
+	// Compute projected gradient direction and initial steplength.
 	VectorType dx = libspgl1::projectI<VectorType>(x-g, parameters.tau)-x;
 	double dxNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(dx));
 	double gStep = libspgl1::initialization::compute_gstep(dxNorm,
@@ -42,16 +71,15 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
     bool exit = false;
     int iter = 0;
 	while(true){
-		double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-g));
-		double rNorm = libspgl1::math::norm<double>(r, 2);
 		VectorType residual_minus_measurements = r-b;
-		double gap = libspgl1::vector::dot<double>(r, residual_minus_measurements) + parameters.tau*gNorm;
-		double rGap = std::abs(gap) / std::max(1.0,f);
+		double rNorm = libspgl1::math::norm<double>(r, 2);
 		double aError1 = rNorm - sigma;
 		double aError2 = f - std::pow(sigma, 2) / 2.0;
 		double rError1 = std::abs(aError1) / std::max(1.0, rNorm);
+		double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-g));
+		double gap = libspgl1::vector::dot<double>(r, residual_minus_measurements) + parameters.tau*gNorm;
+		double rGap = std::abs(gap) / std::max(1.0,f);
 		double rError2 = std::abs(aError2) / std::max(1.0, f);
-
 		if (rGap <= std::max(parameters.optTol, rError2) || rError1 <= parameters.optTol ){
 			if (rNorm       <=   parameters.bpTol * bNorm){
 				exit = true;
@@ -142,5 +170,8 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 
     return x;
 }
+
+
+
 
 } // libspgl1

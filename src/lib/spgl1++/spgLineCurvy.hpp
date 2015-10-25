@@ -60,9 +60,9 @@ spgLineCurvyVars<VectorType> spgLineCurvy(const MatrixType &A, VectorType &x, li
 	    v.step = v.step / 2.0;
 
 	    sNormOld  = sNorm;
-	    sNorm     = libspgl1::math::norm<double>(s, 2.0) / std::sqrt(double(n));
+	    sNorm     = libspgl1::math::norm<double>(s, 2.0) / std::sqrt(static_cast<double>(n));
 	    if(std::abs(sNorm - sNormOld) <= 1e-6 * sNorm){
-	    	gNorm = libspgl1::math::norm<double>(g, 2.0) / std::sqrt(double(n));
+	    	gNorm = libspgl1::math::norm<double>(g, 2.0) / std::sqrt(static_cast<double>(n));
 	    	scale = sNorm / gNorm / std::pow(2.0, nSafe);
 	        nSafe = nSafe + 1;
 	    }
