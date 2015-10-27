@@ -20,10 +20,10 @@ namespace initialization {
 		return libspgl1::vector::dot<double>(r,r) / 2.0;
 	}
 
-	double compute_gstep(const double& dxNorm,
-						 const double& stepmin,
-						 const double& stepmax){
-		double gStep;
+	double compute_gstep(double dxNorm,
+						 double stepmin,
+						 double stepmax){
+		double gStep=0.0;
 		if (dxNorm < (1.0 / stepmax)){
 		    gStep = stepmax;
 		}

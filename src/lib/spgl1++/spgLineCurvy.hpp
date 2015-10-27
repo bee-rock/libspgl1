@@ -12,7 +12,7 @@ struct spgLineCurvyVars {
 	double err;
 	bool EXIT_CONVERGED;
 
-	spgLineCurvyVars(VectorType &x) :
+	spgLineCurvyVars(const VectorType &x) :
 		fNew(0.0),
 		xNew(x),
 		rNew(x),
@@ -24,7 +24,7 @@ struct spgLineCurvyVars {
 };
 
 template <typename MatrixType, typename VectorType>
-spgLineCurvyVars<VectorType> spgLineCurvy(const MatrixType &A, VectorType &x, libspgl1::Parameters parameters, const VectorType &b, VectorType &g, double fMax){
+spgLineCurvyVars<VectorType> spgLineCurvy(const MatrixType &A, VectorType &x, libspgl1::Parameters parameters, const VectorType &b, const VectorType &g, double fMax){
 
 	spgLineCurvyVars <VectorType>v(x);
 	double gamma  = 1e-4;
