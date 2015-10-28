@@ -8,7 +8,7 @@ namespace libspgl1 {
 
 template<typename MatrixType, typename VectorType>
 struct Vectors {
-	VectorType x, xBest, xOld, r, rOld, g, gOld, dx, b, lastFv;; //If I declare this first then the code breaks unless I run I compile it in debug mode...what sort of optimization is happening in release mode?
+	VectorType b, x, r, g, dx, xOld, rOld, gOld, xBest, lastFv;
 
 	Vectors(Parameters parameters, const MatrixType& A, const MatrixType& At, const VectorType& b, const VectorType &x0) :
 		b{b},
