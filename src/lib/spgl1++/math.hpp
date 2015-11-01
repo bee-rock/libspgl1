@@ -43,6 +43,18 @@ double max(const VectorType& a){
 }
 
 template<typename ElementType, typename VectorType>
+ElementType infinity_norm(const VectorType& x)
+{
+	return libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(x));
+}
+
+template<typename ElementType, typename VectorType>
+ElementType NormL1_dual(const VectorType& x, const VectorType& weights)
+{
+	return libspgl1::math::infinity_norm<double>(libspgl1::vector::elementwise_division(x, weights));
+}
+
+template<typename ElementType, typename VectorType>
 double min(const VectorType& a){
 	double current_min = a[0];
 	const size_t n_elems = libspgl1::vector::n_elem(a);

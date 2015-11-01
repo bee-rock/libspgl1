@@ -68,6 +68,18 @@ VectorType elementwise_multiplication(const VectorType& x, const VectorType& y) 
     return z;
 }
 
+template<typename VectorType>
+VectorType elementwise_division(const VectorType& x, const VectorType& y) {
+    size_t n = libspgl1::vector::n_elem(x);
+    VectorType z = x;
+    for (size_t i=0; i<n; i++){
+    	auto x_elem = libspgl1::vector::get_element<double>(x, i);
+    	auto y_elem = libspgl1::vector::get_element<double>(y, i);
+    	libspgl1::vector::set_element(z, i, x_elem / y_elem);
+    }
+    return z;
+}
+
 } // matrix
 } // libspgl1
 

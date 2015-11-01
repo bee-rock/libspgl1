@@ -63,8 +63,9 @@ bool update_tau(libspgl1::Quantities<MatrixType, VectorType> quantities, libspgl
 	return ((testRelChange1 && errors.rNorm >  2.0 * quantities.sigma) || (testRelChange2 && errors.rNorm <= 2.0 * quantities.sigma));
 }
 
+
 template<typename MatrixType, typename VectorType>
-VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b, const VectorType &x0)
+VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b, const VectorType &x0, const VectorType& weights)
 {
 	libspgl1::Parameters parameters(b);
 	libspgl1::Vectors <MatrixType, VectorType>vectors(parameters, A, At, b, x0);
@@ -81,7 +82,8 @@ VectorType spgl1(const MatrixType& A, const MatrixType& At, const VectorType& b,
 	while(true){
 		VectorType residual_minus_measurements = vectors.r - b;
 		libspgl1::Errors<MatrixType, VectorType> errors(vectors, quantities);
-		double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-1.0*vectors.g));
+		//double gNorm = libspgl1::math::max<double>(libspgl1::vector::abs<VectorType>(-1.0*vectors.g));
+		double gNorm = libspgl1::math::NormL1_dual<double>(static_cast<const VectorType&>(-1.0*vectors.g), weights);
 		double gap = libspgl1::vector::dot<double>(vectors.r, residual_minus_measurements) + parameters.tau*gNorm;
 		double rGap = std::abs(gap) / std::max(1.0, quantities.f);
 		if (rGap <= std::max(parameters.optTol, errors.rError2) || errors.rError1 <= parameters.optTol )
