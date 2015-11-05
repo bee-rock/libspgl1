@@ -16,11 +16,15 @@ To build and run the tests the following libraries are required:
 spgl1++ uses Autotools for managing compilation and installation:
 
 To configure it for your system:
+> ./autogen.sh
 > ./configure
 
 Compile, run tests, and install
 > make
 > make check
 > make install
+
+For the purposes of debugging you may wish to build in debug mode, the following will work for gcc:
+> ./configure CFLAGS="-ggdb3 -O0" CXXFLAGS="-ggdb3 -O0" LDFLAGS="-ggdb3"
 
 To see how to call spgl1++, refer to the test code.
