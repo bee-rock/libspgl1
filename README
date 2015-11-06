@@ -10,8 +10,10 @@ spgl1++ is a C++ library for solving the basis pursuit problem.
 At the moment, only real measurements are supported.
 
 To build and run the tests the following libraries are required:
-- armadillo (http://arma.sourceforge.net)
-- libunittest (http://libunittest.sourceforge.net)
+- armadillo 6.100.1 (http://arma.sourceforge.net)
+- libunittest 9.2.1 (http://libunittest.sourceforge.net)
+
+Ensure they are in your LD_LIBRARY_PATH before continuing.
 
 spgl1++ uses Autotools for managing compilation and installation:
 
@@ -22,7 +24,7 @@ To configure it for your system:
 Compile, run tests, and install
 > make
 > make check
-> make install
+> make install (If you're wanting to install it to compile with your other projects)
 
 For the purposes of debugging you may wish to build in debug mode, the following will work for gcc:
 > ./configure CFLAGS="-ggdb3 -O0" CXXFLAGS="-ggdb3 -O0" LDFLAGS="-ggdb3"
