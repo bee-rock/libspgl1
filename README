@@ -1,3 +1,15 @@
+***********************************************************************
+
+I'm not currently planning on continuing development on SPGL1++. It started as a project to introduce me to C++ and I've outgrown the purpose of the application.
+
+I would suggest trying the following alternative: https://bitbucket.org/vegarant/spgl1 as it seems to be current.
+
+Cheers,
+Brock
+
+***********************************************************************
+
+
 spgl1++ is a C++ library for solving the basis pursuit problem.
 
 1. Basis pursuit (BP):
